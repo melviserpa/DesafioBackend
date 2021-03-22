@@ -11,7 +11,9 @@ para isso devemos consolidar estes dados e devolver para canais diversos.
 A seguir temos 3 endpoints para consulta de valores:
 
 [Tesouro Direto](http://www.mocky.io/v2/5e3428203000006b00d9632a)
+
 [Renda Fixa](http://www.mocky.io/v2/5e3429a33000008c00d96336)
+
 [Fundos](http://www.mocky.io/v2/5e342ab33000008c00d96342)
 
 
@@ -42,7 +44,7 @@ O contrato esperado para o retorno é o seguinte:
 
 ### IR:
 
-    *Taxa sobre a rentabilidade*
+Taxa sobre a rentabilidade*
     1.Tesouro Direto 10%
     2.LCI 5%
     3.Fundos 15%
@@ -58,8 +60,10 @@ O contrato esperado para o retorno é o seguinte:
 
 ## Tecnologias utilizadas
     .Net Core 3.1
+    .HealthChecks
     .Docker
     .Polly
+    .
 
 
 ## Patterns abordados
