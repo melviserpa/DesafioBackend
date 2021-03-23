@@ -1,0 +1,13 @@
+{
+    "valorTotal": 829.68,
+    "investimentos": [
+        {
+            "nome": "Tesouro Selic 2025",
+            "valorInvestido": 799.4720,
+            "valorTotal": 829.68,
+            "vencimento": "2025-03-01T00:00:00",
+            "Ir": 3.0208,
+            "valorResgate": 705.228
+        }
+    ]
+}

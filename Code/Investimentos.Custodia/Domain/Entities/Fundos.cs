@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
-    public class Fundos
+    public class Fundos : ICustodia
     {
         public decimal CapitalInvestido { get; private set; }
         public decimal ValorAtual { get; private set; }
@@ -12,9 +12,9 @@ namespace Investimentos.Custodia.Domain.Entities
         public decimal IOF { get; private set; }
         public string Nome { get; private set; }
         public decimal TotalTaxas { get; private set; }
-        public double Quantity { get; private set; }
+        public decimal Quantity { get; private set; }
 
-        public Fundos(decimal capitalInvestido, decimal valorAtual, DateTime dataResgate, DateTime dataCompra, decimal iOF, string nome, decimal totalTaxas, double quantity)
+        public Fundos(decimal capitalInvestido, decimal valorAtual, DateTime dataResgate, DateTime dataCompra, decimal iOF, string nome, decimal totalTaxas, decimal quantity)
         {
             CapitalInvestido = capitalInvestido;
             ValorAtual = valorAtual;
@@ -23,18 +23,60 @@ namespace Investimentos.Custodia.Domain.Entities
             IOF = iOF;
             Nome = nome;
             TotalTaxas = totalTaxas;
-            this.Quantity = quantity;
+            Quantity = quantity;
+        }
+
+        public Investimento CalculaInvestimento(decimal taxaIR)
+        {
+            return new Investimento(
+                nome: $"Fundos {this.Nome}",
+                valorInvestido: calculaValorInvestido(),
+                valorTotal: ValorAtual,
+                vencimento: this.DataResgate,
+                iR: calculaIR(taxaIR),
+                valorResgate: calculaValorParaResgate()
+                );
+        }
+
+
+        private decimal calculaValorInvestido()
+        {
+            return (this.CapitalInvestido * this.Quantity);
+        }
+
+        private decimal calculaValorParaResgate()
+        {
+            return 0m - TotalTaxas;
+        }
+
+        private decimal calculaRentabilidade()
+        {
+            return 0m;
+        }
+
+        private decimal calculaIR(decimal taxaIR)
+        {
+            return 0m;
         }
     }
 
 
-    public class ListFundos
+    public class ListFundos : IListaCustodia
     {
+        public List<Fundos> Fundos { get; private set; }
+
         public ListFundos(List<Fundos> fundos)
         {
             Fundos = fundos ?? new List<Fundos>();
         }
 
-        public List<Fundos> Fundos { get; private set; }
+        public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+
+/*
+ decimal taxaIR = decimal.Parse(configuration.GetSection(Constantes.IRTaxaSobreRentabilidade.Fundos).Value);
+ */

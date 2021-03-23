@@ -5,6 +5,13 @@
         public const string FundosServiceConfig = "FundosServiceConfig";
         public const string TesouroDiretoServiceConfig = "TesouroDiretoServiceConfig";
         public const string RendaFixaServiceConfig = "RendaFixaServiceConfig";
+
+        public static class IRTaxaSobreRentabilidade
+        {
+            public const string TesouroDireto = "IRTaxaSobreRentabilidade:TesouroDireto";
+            public const string LCI = "IRTaxaSobreRentabilidade:LCI";
+            public const string Fundos = "IRTaxaSobreRentabilidade:Fundos";
+        }
     }
 
     public interface IServices

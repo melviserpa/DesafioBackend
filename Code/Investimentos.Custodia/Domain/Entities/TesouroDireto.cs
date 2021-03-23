@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
-    public class TesouroDireto
+    public class TesouroDireto : ICustodia
     {
 
         public decimal ValorInvestido { get; private set; }
@@ -26,16 +26,26 @@ namespace Investimentos.Custodia.Domain.Entities
             Tipo = tipo;
             Nome = nome;
         }
+
+        public Investimento CalculaInvestimento(decimal taxaIR)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
-    public class ListTesouroDireto
+    public class ListTesouroDireto : IListaCustodia
     {
+        public List<TesouroDireto> TDs { get; private set; }
+
         public ListTesouroDireto(List<TesouroDireto> tds)
         {
             TDs = tds ?? new List<TesouroDireto>();
         }
 
-        public List<TesouroDireto> TDs { get; private set; }
+        public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

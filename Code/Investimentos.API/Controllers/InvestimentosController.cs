@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
+using Investimentos.Custodia.Domain.Entities;
 using Investimentos.Custodia.Infra.Services;
 
 using Microsoft.AspNetCore.Http;
@@ -27,8 +28,8 @@ namespace Investimentos.API.Controllers
         [HttpGet("Connections")]
         [ApiExplorerSettings(IgnoreApi = true)]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<ListaInvestimentos>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ListaInvestimentos>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetResourcesAsync([FromServices] FundosService service)
         {
             var result = await service.GetFundosAsync();

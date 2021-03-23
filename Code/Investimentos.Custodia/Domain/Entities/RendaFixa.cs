@@ -7,7 +7,7 @@ namespace Investimentos.Custodia.Domain.Entities
     {
         public decimal CapitalInvestido { get; private set; }
         public decimal CapitalAtual { get; private set; }
-        public double Quantidade { get; private set; }
+        public decimal Quantidade { get; private set; }
         public DateTime Vencimento { get; private set; }
         public decimal IOF { get; private set; }
         public decimal OutrasTaxas { get; private set; }
@@ -20,7 +20,7 @@ namespace Investimentos.Custodia.Domain.Entities
         public decimal PrecoUnitario { get; private set; }
         public bool Primario { get; private set; }
 
-        public RendaFixa(decimal capitalInvestido, decimal capitalAtual, double quantidade, DateTime vencimento, decimal iOF, decimal outrasTaxas, decimal taxas, string indice, string tipo, string nome, bool guarantidoFGC, DateTime dataOperacao, decimal precoUnitario, bool primario)
+        public RendaFixa(decimal capitalInvestido, decimal capitalAtual, decimal quantidade, DateTime vencimento, decimal iOF, decimal outrasTaxas, decimal taxas, string indice, string tipo, string nome, bool guarantidoFGC, DateTime dataOperacao, decimal precoUnitario, bool primario)
         {
             CapitalInvestido = capitalInvestido;
             CapitalAtual = capitalAtual;
@@ -42,11 +42,11 @@ namespace Investimentos.Custodia.Domain.Entities
 
     public class ListRendaFixa
     {
+        public List<RendaFixa> LCIs { get; private set; }
+
         public ListRendaFixa(List<RendaFixa> lcis)
         {
             LCIs = lcis ?? new List<RendaFixa>();
         }
-
-        public List<RendaFixa> LCIs { get; private set; }
     }
 }
