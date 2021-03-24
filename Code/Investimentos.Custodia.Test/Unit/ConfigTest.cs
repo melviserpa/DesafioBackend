@@ -35,11 +35,14 @@ namespace Investimentos.Custodia.Test.Unit
 
             services = new ServiceCollection()
                .Configure<FundosServiceConfig>(configuration.GetSection(FundosServiceConfig.Key))
+               .Configure<TesouroDiretoServiceConfig>(configuration.GetSection(TesouroDiretoServiceConfig.Key))
+               .Configure<RendaFixaServiceConfig>(configuration.GetSection(RendaFixaServiceConfig.Key))
+               .Configure<BasesCalculoConfig>(configuration.GetSection(BasesCalculoConfig.Key))
                .BuildServiceProvider();
         }
 
         [TestMethod]
-        public void Fundos_Get_Test_Ok()
+        public void FundosServiceConfig_Get_Test_3metodosOk()
         {
             FundosServiceConfig config = new FundosServiceConfig();
             configuration.GetSection(FundosServiceConfig.Key).Bind(config);
@@ -48,8 +51,29 @@ namespace Investimentos.Custodia.Test.Unit
             var config1 = configuration.GetSection(FundosServiceConfig.Key).Get<FundosServiceConfig>();
             config1.Timeout.Should().Be(10);
 
-            var config3 = services.GetService<IOptions<FundosServiceConfig>>();
-            config3.Value.Timeout.Should().Be(10);
+            var options = services.GetService<IOptions<FundosServiceConfig>>();
+            options.Value.Timeout.Should().Be(10);
+        }
+
+        [TestMethod]
+        public void FundosServiceConfig_Get_Test_Ok()
+        {
+            var options = services.GetService<IOptions<FundosServiceConfig>>();
+
+            options.Value.BaseAddress.Should().Be("http://www.mocky.io/");
+            options.Value.EndpointUrn.Should().Be("v2/5e342ab33000008c00d96342-URN");
+            options.Value.Timeout.Should().Be(10);
+            options.Value.HealthCheckUrn.Should().Be("v2/5e342ab33000008c00d96342");
+        }
+
+        [TestMethod]
+        public void BasesCalculoConfig_Get_Test_Ok()
+        {
+            var options = services.GetService<IOptions<BasesCalculoConfig>>();
+
+            options.Value.TaxaSobreRentabilidadeIR.TesouroDireto.Should().Be(10m);
+            options.Value.TaxaSobreRentabilidadeIR.LCI.Should().Be(5m);
+            options.Value.TaxaSobreRentabilidadeIR.Fundos.Should().Be(15m);
         }
     }
 }

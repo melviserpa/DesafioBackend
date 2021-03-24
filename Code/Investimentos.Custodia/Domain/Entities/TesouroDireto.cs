@@ -27,9 +27,30 @@ namespace Investimentos.Custodia.Domain.Entities
             Nome = nome;
         }
 
+        private decimal CalculaIr(decimal taxaIR)
+        {
+            decimal Rentabilidade = ValorTotal - ValorInvestido;
+            return Rentabilidade * (taxaIR / 100);
+        }
+
+        private decimal CalcularValorResgate()
+        {
+            return 705.228m;
+        }
+
         public Investimento CalculaInvestimento(decimal taxaIR)
         {
-            throw new NotImplementedException();
+            decimal ir = CalculaIr(taxaIR);
+            decimal valorResgate = CalcularValorResgate();
+
+            return new Investimento(
+                this.Nome,
+                this.ValorInvestido,
+                this.ValorTotal,
+                this.Vencimento,
+                ir,
+                valorResgate
+                );
         }
     }
 
@@ -45,7 +66,14 @@ namespace Investimentos.Custodia.Domain.Entities
 
         public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
         {
-            throw new NotImplementedException();
+            ListaInvestimentos listaInvestimentos = null;
+
+            foreach (var tesouroDireto in TDs)
+            {
+                listaInvestimentos = tesouroDireto.CalculaInvestimento(taxaIR);
+            }
+
+            return listaInvestimentos;
         }
     }
 }

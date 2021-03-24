@@ -28,10 +28,18 @@ namespace Investimentos.Custodia.Domain.Entities
         public decimal ValorTotal { get; private set; }
         public List<Investimento> Investimentos { get; private set; }
 
-        public ListaInvestimentos(decimal valorTotal, List<Investimento> investimentos)
+        public ListaInvestimentos(Investimento investimento)
         {
-            ValorTotal = valorTotal;
-            Investimentos = investimentos ?? new List<Investimento>();
+            if(Investimentos == null) Investimentos = new List<Investimento>();
+            this.Add(investimento);
         }
+
+        public void Add(Investimento investimento)
+        {
+            ValorTotal += investimento.ValorTotal;
+            Investimentos.Add(investimento);
+        }
+
+        public static implicit operator ListaInvestimentos(Investimento investimento) => new ListaInvestimentos(investimento);
     }
 }
