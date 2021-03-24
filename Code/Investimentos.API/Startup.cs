@@ -38,7 +38,7 @@ namespace Investimentos.API
 
             services.AddHealthChecksBackEnd();
 
-            services.Configure<FundosServiceConfig>(this.Configuration.GetSection(Constantes.FundosServiceConfig));
+            services.Configure<FundosServiceConfig>(this.Configuration.GetSection(FundosServiceConfig.Key));
 
             services.AddHttpClient<FundosService>();
         }

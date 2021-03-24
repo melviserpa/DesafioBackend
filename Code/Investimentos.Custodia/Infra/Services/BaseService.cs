@@ -16,9 +16,9 @@ namespace Investimentos.Custodia.Infra.Services
     public abstract class BaseService : IHealthCheck
     {
         protected readonly HttpClient client;
-        protected readonly IServices configService;
+        protected readonly ServicesConfig configService;
 
-        public BaseService(HttpClient client, IServices configService)
+        public BaseService(HttpClient client, ServicesConfig configService)
         {
             this.client = client;
             this.configService = configService;

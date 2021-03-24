@@ -25,7 +25,7 @@ namespace Investimentos.Custodia.Test.Integration
             IConfigurationSection config = Configuration.GetSection("FundosServiceConfig");
 
             var services = new ServiceCollection()
-               .Configure<FundosServiceConfig>(Configuration.GetSection(Constantes.FundosServiceConfig))
+               .Configure<FundosServiceConfig>(Configuration.GetSection(FundosServiceConfig.Key))
                .AddHttpClient()
                .BuildServiceProvider();
         }
