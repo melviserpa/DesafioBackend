@@ -35,8 +35,6 @@ namespace Investimentos.Custodia.Test.Unit
 
             services = new ServiceCollection()
                .Configure<FundosServiceConfig>(configuration.GetSection(FundosServiceConfig.Key))
-               .Configure<ServiceConfig>(ServiceConfig.FundosService, configuration.GetSection(ServiceConfig.FundosServiceKey))
-               .Configure<ServiceConfig>(ServiceConfig.RendaFixa, configuration.GetSection(ServiceConfig.RendaFixaKey))
                .BuildServiceProvider();
         }
 
@@ -52,12 +50,6 @@ namespace Investimentos.Custodia.Test.Unit
 
             var config3 = services.GetService<IOptions<FundosServiceConfig>>();
             config3.Value.Timeout.Should().Be(10);
-
-            var config4 = services.GetService<IOptionsSnapshot<ServiceConfig>>();
-            var fundo = config4.Get(ServiceConfig.FundosService);
-            fundo.Timeout.Should().Be(10);
-            var rf = config4.Get(ServiceConfig.RendaFixa);
-            rf.Timeout.Should().Be(20);
         }
     }
 }
