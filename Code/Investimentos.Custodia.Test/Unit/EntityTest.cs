@@ -94,26 +94,26 @@ namespace Investimentos.Custodia.Test.Unit
 
             result.Should().NotBeNull();
 
-            result.TDs.Should().NotBeNull();
-            result.TDs.Should().HaveCount(2);
+            result.Entities.Should().NotBeNull();
+            result.Entities.Should().HaveCount(2);
 
-            result.TDs[0].ValorInvestido.Should().Be(799.4720m);
-            result.TDs[0].ValorTotal.Should().Be(829.68m);
-            result.TDs[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
-            result.TDs[0].DataDeCompra.Should().Be(new DateTime(2015, 03, 01));
-            result.TDs[0].IOF.Should().Be(0m);
-            result.TDs[0].Indice.Should().Be("SELIC");
-            result.TDs[0].Tipo.Should().Be("TD");
-            result.TDs[0].Nome.Should().Be("Tesouro Selic 2025");
+            result.Entities[0].ValorInvestido.Should().Be(799.4720m);
+            result.Entities[0].ValorTotal.Should().Be(829.68m);
+            result.Entities[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
+            result.Entities[0].DataDeCompra.Should().Be(new DateTime(2015, 03, 01));
+            result.Entities[0].IOF.Should().Be(0m);
+            result.Entities[0].Indice.Should().Be("SELIC");
+            result.Entities[0].Tipo.Should().Be("TD");
+            result.Entities[0].Nome.Should().Be("Tesouro Selic 2025");
 
-            result.TDs[1].ValorInvestido.Should().Be(467.1470m);
-            result.TDs[1].ValorTotal.Should().Be(502.787m);
-            result.TDs[1].Vencimento.Should().Be(new DateTime(2020, 02, 01));
-            result.TDs[1].DataDeCompra.Should().Be(new DateTime(2010, 02, 10));
-            result.TDs[1].IOF.Should().Be(0m);
-            result.TDs[1].Indice.Should().Be("IPCA");
-            result.TDs[1].Tipo.Should().Be("TD");
-            result.TDs[1].Nome.Should().Be("Tesouro IPCA 2035");
+            result.Entities[1].ValorInvestido.Should().Be(467.1470m);
+            result.Entities[1].ValorTotal.Should().Be(502.787m);
+            result.Entities[1].Vencimento.Should().Be(new DateTime(2020, 02, 01));
+            result.Entities[1].DataDeCompra.Should().Be(new DateTime(2010, 02, 10));
+            result.Entities[1].IOF.Should().Be(0m);
+            result.Entities[1].Indice.Should().Be("IPCA");
+            result.Entities[1].Tipo.Should().Be("TD");
+            result.Entities[1].Nome.Should().Be("Tesouro IPCA 2035");
         }
 
         [TestMethod]
@@ -122,8 +122,8 @@ namespace Investimentos.Custodia.Test.Unit
             var result = JsonSerializer.Deserialize<ListTesouroDireto>(empty, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
-            result.TDs.Should().NotBeNull();
-            result.TDs.Should().HaveCount(0);
+            result.Entities.Should().NotBeNull();
+            result.Entities.Should().HaveCount(0);
         }
 
         [TestMethod]

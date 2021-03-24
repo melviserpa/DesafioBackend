@@ -28,9 +28,15 @@ namespace Investimentos.Custodia.Domain.Entities
         public decimal ValorTotal { get; private set; }
         public List<Investimento> Investimentos { get; private set; }
 
-        public ListaInvestimentos(Investimento investimento)
+        public ListaInvestimentos(decimal valorTotal, List<Investimento> investimentos)
         {
-            if(Investimentos == null) Investimentos = new List<Investimento>();
+            ValorTotal = valorTotal;
+            Investimentos = investimentos ?? new List<Investimento>();
+        }
+
+        internal ListaInvestimentos(Investimento investimento)
+        {
+            if (Investimentos == null) Investimentos = new List<Investimento>();
             this.Add(investimento);
         }
 

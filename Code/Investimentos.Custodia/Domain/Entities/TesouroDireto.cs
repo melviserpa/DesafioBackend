@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
@@ -15,6 +16,7 @@ namespace Investimentos.Custodia.Domain.Entities
         public string Tipo { get; private set; }
         public string Nome { get; private set; }
 
+        [JsonConstructor]
         public TesouroDireto(decimal valorInvestido, decimal valorTotal, DateTime vencimento, DateTime dataDeCompra, decimal iOF, string indice, string tipo, string nome)
         {
             ValorInvestido = valorInvestido;
@@ -55,25 +57,35 @@ namespace Investimentos.Custodia.Domain.Entities
     }
 
 
-    public class ListTesouroDireto : IListaCustodia
+    //public class ListTesouroDireto : IListaCustodia
+    //{
+    //    [JsonPropertyName("TDs")]
+    //    public List<TesouroDireto> Entities { get; private set; }
+
+    //    public ListTesouroDireto(List<TesouroDireto> entities)
+    //    {
+    //        Entities = entities ?? new List<TesouroDireto>();
+    //    }
+
+    //    public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
+    //    {
+    //        ListaInvestimentos listaInvestimentos = null;
+
+    //        foreach (var tesouroDireto in Entities)
+    //        {
+    //            listaInvestimentos = tesouroDireto.CalculaInvestimento(taxaIR);
+    //        }
+
+    //        return listaInvestimentos;
+    //    }
+    //}
+
+    //Não está funcionando com System.Text.Json
+    public class ListTesouroDireto : ListaCustodia<TesouroDireto>
     {
-        public List<TesouroDireto> TDs { get; private set; }
+        [JsonPropertyName("TDs")]
+        public override List<TesouroDireto> Entities { get; set; }
 
-        public ListTesouroDireto(List<TesouroDireto> tds)
-        {
-            TDs = tds ?? new List<TesouroDireto>();
-        }
-
-        public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
-        {
-            ListaInvestimentos listaInvestimentos = null;
-
-            foreach (var tesouroDireto in TDs)
-            {
-                listaInvestimentos = tesouroDireto.CalculaInvestimento(taxaIR);
-            }
-
-            return listaInvestimentos;
-        }
+        public ListTesouroDireto(List<TesouroDireto> entities) : base(entities) { }
     }
 }
