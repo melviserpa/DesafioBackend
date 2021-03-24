@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
-    public class TesouroDireto : ICustodia
+    public class TesouroDireto : Custodia
     {
 
         public decimal ValorInvestido { get; private set; }
@@ -37,10 +37,29 @@ namespace Investimentos.Custodia.Domain.Entities
 
         private decimal CalcularValorResgate()
         {
+            decimal resgate = 0;
+            decimal valorDesconto = 0;
+
+            const decimal resgateMetadeDoTempo = 15 / 100;
+            const decimal reasgate3MesesParaVencer = 6 / 100;
+            const decimal resgateOutros = 30 / 100;
+
+            var Hoje = DateTime.Today;
+
+            if(Vencimento <= Hoje)
+            {
+                var passouMetade = RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+                var passou3meses = false;
+            }
+
+            valorDesconto = ValorTotal * resgateOutros;
+            resgate = ValorTotal - valorDesconto;
+            //return resgate;
+
             return 705.228m;
         }
 
-        public Investimento CalculaInvestimento(decimal taxaIR)
+        public override Investimento CalculaInvestimento(decimal taxaIR)
         {
             decimal ir = CalculaIr(taxaIR);
             decimal valorResgate = CalcularValorResgate();

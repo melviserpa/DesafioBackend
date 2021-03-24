@@ -268,5 +268,75 @@ namespace Investimentos.Custodia.Test.Unit
         }
 
         #endregion
+
+        #region /* Custodia */
+
+         
+        [TestMethod]
+        public void Custodia_RegraPassouMetadeDaCustodia_Test_1()
+        {
+            var Hoje = DateTime.Today;
+
+            var DataDeCompra = Hoje.AddDays(-50);
+            var Vencimento = Hoje.AddDays(50);
+
+            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Custodia_RegraPassouMetadeDaCustodia_Test_2()
+        {
+            var Hoje = DateTime.Today;
+
+            var DataDeCompra = Hoje.AddDays(-50);
+            var Vencimento = Hoje.AddDays(50);
+
+            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Custodia_RegraPassouMetadeDaCustodia_Test_3()
+        {
+            var Hoje = DateTime.Today;
+
+            var DataDeCompra = Hoje.AddDays(-50);
+            var Vencimento = Hoje.AddDays(50);
+
+            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+
+            result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Custodia_RegraPassouMetadeDaCustodia_Test_4()
+        {
+            var Hoje = DateTime.Today;
+
+            var DataDeCompra = Hoje.AddDays(0);
+            var Vencimento = Hoje.AddDays(0);
+
+            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+
+            result.Should().BeTrue();
+        }
+
+        #endregion
+    }
+
+    public class TesteCustodia : Investimentos.Custodia.Domain.Entities.Custodia
+    {
+        public static bool RegraPassouMetadeDaCustodia(DateTime DataDeCompra, DateTime DataDeVencimento)
+        {
+            return RegraPassouMetadeDaCustodia(DataDeCompra, DataDeVencimento);
+        }
+
+        public override Investimento CalculaInvestimento(decimal taxaIR)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
