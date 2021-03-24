@@ -1,29 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
-    /// <summary>
-    /// Problemas com System.text.json, não reconhece a herança e não chama o construtor para realizar a desserialização do json.
-    /// Newtonsoft funciona...
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class ListaCustodia<T> : IListaCustodia
         where T : ICustodia
     {
-        [JsonPropertyName("TDs")]
-        public abstract List<T> Entities { get; set; }
-
-        public ListaCustodia(List<T> entities)
+        protected ListaCustodia(List<T> custodias)
         {
-            Entities = entities ?? new List<T>();
+            this.custodias = custodias ?? new List<T>();
         }
+
+        internal List<T> custodias { get; set; }
 
         public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
         {
             ListaInvestimentos listaInvestimentos = null;
 
-            foreach (var item in Entities)
+            foreach (var item in custodias)
             {
                 listaInvestimentos = item.CalculaInvestimento(taxaIR);
             }

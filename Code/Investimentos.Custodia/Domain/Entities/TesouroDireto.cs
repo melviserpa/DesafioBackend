@@ -57,35 +57,13 @@ namespace Investimentos.Custodia.Domain.Entities
     }
 
 
-    //public class ListTesouroDireto : IListaCustodia
-    //{
-    //    [JsonPropertyName("TDs")]
-    //    public List<TesouroDireto> Entities { get; private set; }
 
-    //    public ListTesouroDireto(List<TesouroDireto> entities)
-    //    {
-    //        Entities = entities ?? new List<TesouroDireto>();
-    //    }
-
-    //    public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
-    //    {
-    //        ListaInvestimentos listaInvestimentos = null;
-
-    //        foreach (var tesouroDireto in Entities)
-    //        {
-    //            listaInvestimentos = tesouroDireto.CalculaInvestimento(taxaIR);
-    //        }
-
-    //        return listaInvestimentos;
-    //    }
-    //}
-
-    //Não está funcionando com System.Text.Json
     public class ListTesouroDireto : ListaCustodia<TesouroDireto>
     {
         [JsonPropertyName("TDs")]
-        public override List<TesouroDireto> Entities { get; set; }
+        public List<TesouroDireto> Entities { get; private set; }
 
-        public ListTesouroDireto(List<TesouroDireto> entities) : base(entities) { }
+        public ListTesouroDireto(List<TesouroDireto> entities) : base(entities)
+            => Entities = entities ?? new List<TesouroDireto>();
     }
 }
