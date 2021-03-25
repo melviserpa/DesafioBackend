@@ -67,6 +67,7 @@ namespace Investimentos.API.Controllers
 
             if (jsonCache == null)
             {
+                Log.Information("Cache expirado, obtendo ados dos endpoints");
                 var result = await GetInvestimentosAsync();
 
                 string json = JsonSerializer.Serialize(result, JsonHelpers.GetJsonOptions());
@@ -78,7 +79,7 @@ namespace Investimentos.API.Controllers
 
                 return result;
             }
-
+            Log.Information("Obtendo os dados do Cache");
             return JsonSerializer.Deserialize<ListaInvestimentos>(jsonCache, JsonHelpers.GetJsonOptions());
         }
 
