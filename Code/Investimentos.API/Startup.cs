@@ -38,9 +38,14 @@ namespace Investimentos.API
 
             services.AddHealthChecksBackEnd();
 
+            services.Configure<TesouroDiretoServiceConfig>(this.Configuration.GetSection(TesouroDiretoServiceConfig.Key));
             services.Configure<FundosServiceConfig>(this.Configuration.GetSection(FundosServiceConfig.Key));
+            services.Configure<RendaFixaServiceConfig>(this.Configuration.GetSection(RendaFixaServiceConfig.Key));
+            services.Configure<BasesCalculoConfig>(this.Configuration.GetSection(BasesCalculoConfig.Key));
 
+            services.AddHttpClient<TesouroDiretoService>();
             services.AddHttpClient<FundosService>();
+            services.AddHttpClient<RendaFixaService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
