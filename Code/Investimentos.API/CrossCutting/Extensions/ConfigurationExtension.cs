@@ -13,6 +13,7 @@ namespace Investimentos.API.CrossCutting.Extensions
             services.Configure<FundosServiceConfig>(configuration.GetSection(FundosServiceConfig.Key));
             services.Configure<RendaFixaServiceConfig>(configuration.GetSection(RendaFixaServiceConfig.Key));
             services.Configure<BasesCalculoConfig>(configuration.GetSection(BasesCalculoConfig.Key));
+            services.Configure<ConnectionStrings>(configuration.GetSection(ConnectionStrings.Key));
 
             return services;
         }

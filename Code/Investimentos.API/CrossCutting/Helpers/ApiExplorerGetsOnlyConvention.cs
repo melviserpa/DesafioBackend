@@ -14,7 +14,7 @@ namespace Investimentos.API.CrossCutting.Helpers
 
         public void Apply(ActionModel action)
         {
-            var filtra = this.configuration[Constantes.AppConfig.OcultarMetodosInternos];
+            var filtra = this.configuration[AppConfig.OcultarMetodosInternosKey];
 
             if (filtra.ToLower() != "true")
                 action.ApiExplorer.IsVisible = true;
