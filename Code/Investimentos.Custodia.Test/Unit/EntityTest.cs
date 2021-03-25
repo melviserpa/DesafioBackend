@@ -271,29 +271,50 @@ namespace Investimentos.Custodia.Test.Unit
 
         #region /* Custodia */
 
-         
+        public class TesteCustodia : Investimentos.Custodia.Domain.Entities.Custodia
+        {
+            public bool RegraPassouMetadeDaCustodia(DateTime DataDeCompra, DateTime DataDeVencimento)
+            {
+                return base.RegraPassouMetadeDaCustodia(DataDeCompra, DataDeVencimento);
+            }
+
+            public  bool RegraFaltamXMeses(DateTime DataDeVencimento, int meses = 3)
+            {
+                return base.RegraFaltamXMeses(DataDeVencimento, meses);
+            }
+
+            public override Investimento CalculaInvestimento(decimal taxaIR)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         [TestMethod]
         public void Custodia_RegraPassouMetadeDaCustodia_Test_1()
         {
+            TesteCustodia custodia = new TesteCustodia();
+
             var Hoje = DateTime.Today;
 
             var DataDeCompra = Hoje.AddDays(-50);
             var Vencimento = Hoje.AddDays(50);
 
-            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+            var result = custodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
 
-            result.Should().BeTrue();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
         public void Custodia_RegraPassouMetadeDaCustodia_Test_2()
         {
+            TesteCustodia custodia = new TesteCustodia();
+
             var Hoje = DateTime.Today;
 
-            var DataDeCompra = Hoje.AddDays(-50);
-            var Vencimento = Hoje.AddDays(50);
+            var DataDeCompra = Hoje.AddDays(-60);
+            var Vencimento = Hoje.AddDays(40);
 
-            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+            var result = custodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
 
             result.Should().BeTrue();
         }
@@ -301,42 +322,78 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void Custodia_RegraPassouMetadeDaCustodia_Test_3()
         {
+            TesteCustodia custodia = new TesteCustodia(); 
+            
             var Hoje = DateTime.Today;
 
-            var DataDeCompra = Hoje.AddDays(-50);
-            var Vencimento = Hoje.AddDays(50);
+            var DataDeCompra = Hoje.AddDays(-40);
+            var Vencimento = Hoje.AddDays(60);
 
-            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+            var result = custodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
 
-            result.Should().BeTrue();
+            result.Should().BeFalse();
         }
 
         [TestMethod]
         public void Custodia_RegraPassouMetadeDaCustodia_Test_4()
         {
+            TesteCustodia custodia = new TesteCustodia();
+
             var Hoje = DateTime.Today;
 
             var DataDeCompra = Hoje.AddDays(0);
             var Vencimento = Hoje.AddDays(0);
 
-            var result = TesteCustodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+            var result = custodia.RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
+
+            result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Custodia_RegraFaltamXMeses_Test_1()
+        {
+            TesteCustodia custodia = new TesteCustodia();
+
+            var Hoje = DateTime.Today;
+
+            var DataDeVencimento = Hoje.AddMonths(-3).AddDays(-1);
+            var meses = 3;
+
+            var result = custodia.RegraFaltamXMeses(DataDeVencimento, meses);
 
             result.Should().BeTrue();
         }
 
+        [TestMethod]
+        public void Custodia_RegraFaltamXMeses_Test_2()
+        {
+            TesteCustodia custodia = new TesteCustodia();
+
+            var Hoje = DateTime.Today;
+
+            var DataDeVencimento = Hoje.AddMonths(-3).AddDays(1);
+            var meses = 3;
+
+            var result = custodia.RegraFaltamXMeses(DataDeVencimento, meses);
+
+            result.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Custodia_RegraFaltamXMeses_Test_3()
+        {
+            TesteCustodia custodia = new TesteCustodia();
+
+            var Hoje = DateTime.Today;
+
+            var DataDeVencimento = Hoje.AddMonths(-3);
+            var meses = 3;
+
+            var result = custodia.RegraFaltamXMeses(DataDeVencimento, meses);
+
+            result.Should().BeFalse();
+        }
+
         #endregion
-    }
-
-    public class TesteCustodia : Investimentos.Custodia.Domain.Entities.Custodia
-    {
-        public static bool RegraPassouMetadeDaCustodia(DateTime DataDeCompra, DateTime DataDeVencimento)
-        {
-            return RegraPassouMetadeDaCustodia(DataDeCompra, DataDeVencimento);
-        }
-
-        public override Investimento CalculaInvestimento(decimal taxaIR)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Investimentos.Custodia.Test")]
 namespace Investimentos.Custodia.Domain.Entities
 {
     public abstract class Custodia : ICustodia
@@ -14,6 +16,16 @@ namespace Investimentos.Custodia.Domain.Entities
             var passouMetade = Hoje > metade;
 
             return passouMetade;
+        }
+
+        internal bool RegraFaltamXMeses(DateTime DataDeVencimento, int meses = 3)
+        {
+            var Hoje = DateTime.Today;
+
+            var diferenca = DataDeVencimento.AddMonths(-meses);
+            var passouDaData = Hoje > diferenca;
+
+            return passouDaData;
         }
 
         public abstract Investimento CalculaInvestimento(decimal taxaIR);

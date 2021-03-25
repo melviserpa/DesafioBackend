@@ -67,13 +67,24 @@ namespace Investimentos.Custodia.Test.Unit
         }
 
         [TestMethod]
-        public void BasesCalculoConfig_Get_Test_Ok()
+        public void BasesCalculoConfig_TaxaSobreRentabilidadeIR_Get_Test_Ok()
         {
             var options = services.GetService<IOptions<BasesCalculoConfig>>();
 
             options.Value.TaxaSobreRentabilidadeIR.TesouroDireto.Should().Be(10m);
             options.Value.TaxaSobreRentabilidadeIR.LCI.Should().Be(5m);
             options.Value.TaxaSobreRentabilidadeIR.Fundos.Should().Be(15m);
+        }
+
+        [TestMethod]
+        public void BasesCalculoConfig_RegrasDeResgate_Get_Test_Ok()
+        {
+            var options = services.GetService<IOptions<BasesCalculoConfig>>();
+
+            options.Value.RegrasDeResgate.PorcentagemMetadeDoPrazo.Should().Be(15m);
+            options.Value.RegrasDeResgate.AteXMeses.Should().Be(3m);
+            options.Value.RegrasDeResgate.PorcentagemAteXMeses.Should().Be(6m);
+            options.Value.RegrasDeResgate.Outros.Should().Be(30m);
         }
     }
 }
