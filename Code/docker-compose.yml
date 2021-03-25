@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  investimentos.api:
+    image: ${DOCKER_REGISTRY-}investimentos.api
+    build:
+      context: .
+      dockerfile: Investimentos.API/Dockerfile

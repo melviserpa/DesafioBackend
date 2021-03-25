@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{79F24ED8-D500-49F7-B0EA-F29A40E36BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investimentos.API", "Investimentos.API\Investimentos.API.csproj", "{37C5F790-207D-4434-99B6-434A4F3D71DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investimentos.API", "Investimentos.API\Investimentos.API.csproj", "{37C5F790-207D-4434-99B6-434A4F3D71DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investimentos.Custodia", "Investimentos.Custodia\Investimentos.Custodia.csproj", "{152EF28A-5D5C-44D9-9E47-5795D198E2C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investimentos.Custodia", "Investimentos.Custodia\Investimentos.Custodia.csproj", "{152EF28A-5D5C-44D9-9E47-5795D198E2C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Investimentos.Custodia.Test", "Investimentos.Custodia.Test\Investimentos.Custodia.Test.csproj", "{0FE36BAC-C938-48DD-83B0-E720BE9D65D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Investimentos.Custodia.Test", "Investimentos.Custodia.Test\Investimentos.Custodia.Test.csproj", "{0FE36BAC-C938-48DD-83B0-E720BE9D65D6}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5FBFEE7E-C295-4529-B318-EF1589D5DAB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{0FE36BAC-C938-48DD-83B0-E720BE9D65D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE36BAC-C938-48DD-83B0-E720BE9D65D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE36BAC-C938-48DD-83B0-E720BE9D65D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FBFEE7E-C295-4529-B318-EF1589D5DAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FBFEE7E-C295-4529-B318-EF1589D5DAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FBFEE7E-C295-4529-B318-EF1589D5DAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FBFEE7E-C295-4529-B318-EF1589D5DAB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
