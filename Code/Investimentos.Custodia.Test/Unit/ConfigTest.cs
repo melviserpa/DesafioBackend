@@ -82,9 +82,9 @@ namespace Investimentos.Custodia.Test.Unit
             var options = services.GetService<IOptions<BasesCalculoConfig>>();
 
             options.Value.RegrasDeResgate.PorcentagemMetadeDoPrazo.Should().Be(15m);
-            options.Value.RegrasDeResgate.AteXMeses.Should().Be(3m);
+            options.Value.RegrasDeResgate.AteXMeses.Should().Be(3);
             options.Value.RegrasDeResgate.PorcentagemAteXMeses.Should().Be(6m);
-            options.Value.RegrasDeResgate.Outros.Should().Be(30m);
+            options.Value.RegrasDeResgate.PorcentagemOutros.Should().Be(30m);
         }
     }
 }

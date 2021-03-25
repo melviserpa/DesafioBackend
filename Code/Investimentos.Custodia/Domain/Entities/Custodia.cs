@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+using Investimentos.Custodia.CrossCutting.Config;
+
 [assembly: InternalsVisibleTo("Investimentos.Custodia.Test")]
 namespace Investimentos.Custodia.Domain.Entities
 {
@@ -18,17 +20,17 @@ namespace Investimentos.Custodia.Domain.Entities
             return passouMetade;
         }
 
-        internal bool RegraFaltamXMeses(DateTime DataDeVencimento, int meses = 3)
+        internal bool RegraAteXMeses(DateTime DataDeVencimento, int meses = 3)
         {
             var Hoje = DateTime.Today;
 
             var diferenca = DataDeVencimento.AddMonths(-meses);
-            var passouDaData = Hoje > diferenca;
+            var passouDaData = Hoje >= diferenca;
 
             return passouDaData;
         }
 
-        public abstract Investimento CalculaInvestimento(decimal taxaIR);
+        public abstract Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo);
     }
 
 
@@ -42,13 +44,13 @@ namespace Investimentos.Custodia.Domain.Entities
             => this.Custodias = custodias ?? new List<T>();
 
 
-        public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
+        public ListaInvestimentos CalculaInvestimentos(BasesCalculoConfig basesCalculo)
         {
-            ListaInvestimentos listaInvestimentos = null;
+            ListaInvestimentos listaInvestimentos = new ListaInvestimentos(0, null);
 
             foreach (var item in Custodias)
             {
-                listaInvestimentos = item.CalculaInvestimento(taxaIR);
+                listaInvestimentos.Add(item.CalculaInvestimento(basesCalculo));
             }
 
             return listaInvestimentos;

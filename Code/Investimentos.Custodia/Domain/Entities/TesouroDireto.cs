@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+using Investimentos.Custodia.CrossCutting.Config;
+
 namespace Investimentos.Custodia.Domain.Entities
 {
     public class TesouroDireto : Custodia
@@ -35,34 +37,43 @@ namespace Investimentos.Custodia.Domain.Entities
             return Rentabilidade * (taxaIR / 100);
         }
 
-        private decimal CalcularValorResgate()
+        private decimal CalcularValorResgate(RegrasDeResgate regras)
         {
-            decimal resgate = 0;
+            decimal resgate = ValorTotal;
             decimal valorDesconto = 0;
 
-            const decimal resgateMetadeDoTempo = 15 / 100;
-            const decimal reasgate3MesesParaVencer = 6 / 100;
-            const decimal resgateOutros = 30 / 100;
+            decimal resgateMetadeDoTempo = regras.PorcentagemMetadeDoPrazo / 100m;
+            decimal reasgateXMesesParaVencer = regras.PorcentagemAteXMeses / 100;
+            decimal resgateOutros = regras.PorcentagemOutros / 100;
 
             var Hoje = DateTime.Today;
 
-            if(Vencimento <= Hoje)
+            if (Vencimento >= Hoje)
             {
-                var passouMetade = RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento);
-                var passou3meses = false;
+                if (RegraAteXMeses(Vencimento, regras.AteXMeses))
+                {
+                    valorDesconto = ValorTotal * reasgateXMesesParaVencer;
+                    resgate = ValorTotal - valorDesconto;
+                }
+                else if (RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento))
+                {
+                    valorDesconto = ValorTotal * resgateMetadeDoTempo;
+                    resgate = ValorTotal - valorDesconto;
+                }
+                else
+                {
+                    valorDesconto = ValorTotal * resgateOutros;
+                    resgate = ValorTotal - valorDesconto;
+                }
             }
 
-            valorDesconto = ValorTotal * resgateOutros;
-            resgate = ValorTotal - valorDesconto;
-            //return resgate;
-
-            return 705.228m;
+            return resgate;
         }
 
-        public override Investimento CalculaInvestimento(decimal taxaIR)
+        public override Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo)
         {
-            decimal ir = CalculaIr(taxaIR);
-            decimal valorResgate = CalcularValorResgate();
+            decimal ir = CalculaIr(basesCalculo.TaxaSobreRentabilidadeIR.TesouroDireto);
+            decimal valorResgate = CalcularValorResgate(basesCalculo.RegrasDeResgate);
 
             return new Investimento(
                 this.Nome,

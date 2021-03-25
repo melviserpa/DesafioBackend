@@ -4,6 +4,7 @@ using System.Text.Json;
 
 using FluentAssertions;
 
+using Investimentos.Custodia.CrossCutting.Config;
 using Investimentos.Custodia.CrossCutting.Helpers;
 using Investimentos.Custodia.Domain.Entities;
 
@@ -203,87 +204,21 @@ namespace Investimentos.Custodia.Test.Unit
 
         #endregion
 
-        #region /* Investimentos */
-
-        [TestMethod]
-        public void Investimentos_JsonParse_Test_LoadOk()
-        {
-            var result = JsonSerializer.Deserialize<ListaInvestimentos>(investimentos, JsonHelpers.GetJsonOptions());
-
-            result.Should().NotBeNull();
-            result.ValorTotal.Should().Be(829.68m);
-
-            result.Investimentos.Should().NotBeNull();
-            result.Investimentos.Should().HaveCount(1);
-
-            result.Investimentos[0].Nome.Should().Be("Tesouro Selic 2025");
-            result.Investimentos[0].ValorInvestido.Should().Be(799.4720m);
-            result.Investimentos[0].ValorTotal.Should().Be(829.68m);
-            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
-            result.Investimentos[0].IR.Should().Be(3.0208m);
-            result.Investimentos[0].ValorResgate.Should().Be(705.228m);
-        }
-
-        [TestMethod]
-        public void Investimentos_JsonParse_Test_LoadJsonEmpty()
-        {
-            var result = JsonSerializer.Deserialize<ListaInvestimentos>(empty, JsonHelpers.GetJsonOptions());
-
-            result.Should().NotBeNull();
-            result.Investimentos.Should().NotBeNull();
-            result.Investimentos.Should().HaveCount(0);
-        }
-
-        [TestMethod]
-        public void Investimentos_JsonParse_Test_ErrorLoadStringEmpty()
-        {
-            Action action = () => JsonSerializer.Deserialize<ListaInvestimentos>(string.Empty, JsonHelpers.GetJsonOptions());
-
-            action.Should()
-            .ThrowExactly<JsonException>()
-            .WithMessage("The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.");
-        }
-
-        [TestMethod]
-        public void Investimentos_Sumarize_TesouroDireto_Test_Ok()
-        {
-            string tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto_teste1.json");
-            var listaTesouroDireto = JsonSerializer.Deserialize<ListTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
-            decimal taxaIR = 10;
-
-            ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(taxaIR);
-
-            result.Should().NotBeNull();
-            result.ValorTotal.Should().Be(829.68m);
-
-            result.Investimentos.Should().NotBeNull();
-            result.Investimentos.Should().HaveCount(1);
-
-            result.Investimentos[0].Nome.Should().Be("Tesouro Selic 2025");
-            result.Investimentos[0].ValorInvestido.Should().Be(799.4720m);
-            result.Investimentos[0].ValorTotal.Should().Be(829.68m);
-            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
-            result.Investimentos[0].IR.Should().Be(3.0208m);
-            result.Investimentos[0].ValorResgate.Should().Be(705.228m);
-        }
-
-        #endregion
-
         #region /* Custodia */
 
         public class TesteCustodia : Investimentos.Custodia.Domain.Entities.Custodia
         {
-            public bool RegraPassouMetadeDaCustodia(DateTime DataDeCompra, DateTime DataDeVencimento)
+            public new bool RegraPassouMetadeDaCustodia(DateTime DataDeCompra, DateTime DataDeVencimento)
             {
                 return base.RegraPassouMetadeDaCustodia(DataDeCompra, DataDeVencimento);
             }
 
-            public  bool RegraFaltamXMeses(DateTime DataDeVencimento, int meses = 3)
+            public new bool RegraAteXMeses(DateTime DataDeVencimento, int meses = 3)
             {
-                return base.RegraFaltamXMeses(DataDeVencimento, meses);
+                return base.RegraAteXMeses(DataDeVencimento, meses);
             }
 
-            public override Investimento CalculaInvestimento(decimal taxaIR)
+            public override Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo)
             {
                 throw new NotImplementedException();
             }
@@ -350,48 +285,168 @@ namespace Investimentos.Custodia.Test.Unit
         }
 
         [TestMethod]
-        public void Custodia_RegraFaltamXMeses_Test_1()
+        public void Custodia_RegraAteXMeses_Test_1()
         {
             TesteCustodia custodia = new TesteCustodia();
 
             var Hoje = DateTime.Today;
 
-            var DataDeVencimento = Hoje.AddMonths(-3).AddDays(-1);
+            var DataDeVencimento = Hoje.AddMonths(3).AddDays(-1);
             var meses = 3;
 
-            var result = custodia.RegraFaltamXMeses(DataDeVencimento, meses);
+            var result = custodia.RegraAteXMeses(DataDeVencimento, meses);
 
             result.Should().BeTrue();
         }
 
         [TestMethod]
-        public void Custodia_RegraFaltamXMeses_Test_2()
+        public void Custodia_RegraAteXMeses_Test_2()
         {
             TesteCustodia custodia = new TesteCustodia();
 
             var Hoje = DateTime.Today;
 
-            var DataDeVencimento = Hoje.AddMonths(-3).AddDays(1);
+            var DataDeVencimento = Hoje.AddMonths(3).AddDays(1);
             var meses = 3;
 
-            var result = custodia.RegraFaltamXMeses(DataDeVencimento, meses);
+            var result = custodia.RegraAteXMeses(DataDeVencimento, meses);
 
             result.Should().BeFalse();
         }
 
         [TestMethod]
-        public void Custodia_RegraFaltamXMeses_Test_3()
+        public void Custodia_RegraAteXMeses_Test_3()
         {
             TesteCustodia custodia = new TesteCustodia();
 
             var Hoje = DateTime.Today;
 
-            var DataDeVencimento = Hoje.AddMonths(-3);
+            var DataDeVencimento = Hoje.AddMonths(3);
             var meses = 3;
 
-            var result = custodia.RegraFaltamXMeses(DataDeVencimento, meses);
+            var result = custodia.RegraAteXMeses(DataDeVencimento, meses);
 
-            result.Should().BeFalse();
+            result.Should().BeTrue();
+        }
+
+        #endregion
+
+        #region /* Investimentos */
+
+        private static BasesCalculoConfig BaseCalguloConfigCarregaro()
+        {
+            return new BasesCalculoConfig()
+            {
+                TaxaSobreRentabilidadeIR = new TaxaSobreRentabilidadeIR()
+                {
+                    TesouroDireto = 10,
+                    LCI = 5,
+                    Fundos = 15
+                },
+                RegrasDeResgate = new RegrasDeResgate()
+                {
+                    PorcentagemMetadeDoPrazo = 15,
+                    AteXMeses = 3,
+                    PorcentagemAteXMeses = 6,
+                    PorcentagemOutros = 30
+                }
+            };
+        }
+
+        [TestMethod]
+        public void Investimentos_JsonParse_Test_LoadOk()
+        {
+            var result = JsonSerializer.Deserialize<ListaInvestimentos>(investimentos, JsonHelpers.GetJsonOptions());
+
+            result.Should().NotBeNull();
+            result.ValorTotal.Should().Be(829.68m);
+
+            result.Investimentos.Should().NotBeNull();
+            result.Investimentos.Should().HaveCount(1);
+
+            result.Investimentos[0].Nome.Should().Be("Tesouro Selic 2025");
+            result.Investimentos[0].ValorInvestido.Should().Be(799.4720m);
+            result.Investimentos[0].ValorTotal.Should().Be(829.68m);
+            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
+            result.Investimentos[0].IR.Should().Be(3.0208m);
+            result.Investimentos[0].ValorResgate.Should().Be(705.228m);
+        }
+
+        [TestMethod]
+        public void Investimentos_JsonParse_Test_LoadJsonEmpty()
+        {
+            var result = JsonSerializer.Deserialize<ListaInvestimentos>(empty, JsonHelpers.GetJsonOptions());
+
+            result.Should().NotBeNull();
+            result.Investimentos.Should().NotBeNull();
+            result.Investimentos.Should().HaveCount(0);
+        }
+
+        [TestMethod]
+        public void Investimentos_JsonParse_Test_ErrorLoadStringEmpty()
+        {
+            Action action = () => JsonSerializer.Deserialize<ListaInvestimentos>(string.Empty, JsonHelpers.GetJsonOptions());
+
+            action.Should()
+            .ThrowExactly<JsonException>()
+            .WithMessage("The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.");
+        }
+
+        [TestMethod]
+        public void Investimentos_Sumarize_TesouroDireto_Test_1_Ok()
+        {
+            BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
+
+            string tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto_teste1.json");
+            var listaTesouroDireto = JsonSerializer.Deserialize<ListTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
+
+
+            ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(basesCalculo);
+
+            result.Should().NotBeNull();
+            result.ValorTotal.Should().Be(829.68m);
+
+            result.Investimentos.Should().NotBeNull();
+            result.Investimentos.Should().HaveCount(1);
+
+            result.Investimentos[0].Nome.Should().Be("Tesouro Selic 2025");
+            result.Investimentos[0].ValorInvestido.Should().Be(799.4720m);
+            result.Investimentos[0].ValorTotal.Should().Be(829.68m);
+            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
+            result.Investimentos[0].IR.Should().Be(3.0208m);
+            result.Investimentos[0].ValorResgate.Should().Be(705.228m);
+        }
+
+        [TestMethod]
+        public void Investimentos_Sumarize_TesouroDireto_Test_2_Ok()
+        {
+            BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
+
+            string tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto.json");
+            var listaTesouroDireto = JsonSerializer.Deserialize<ListTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
+
+
+            ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(basesCalculo);
+
+            result.Should().NotBeNull();
+            result.ValorTotal.Should().Be(1332.4670m);
+
+            result.Investimentos.Should().NotBeNull();
+            result.Investimentos.Should().HaveCount(2);
+
+            result.Investimentos[0].Nome.Should().Be("Tesouro Selic 2025");
+            result.Investimentos[0].ValorInvestido.Should().Be(799.4720m);
+            result.Investimentos[0].ValorTotal.Should().Be(829.68m);
+            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2025, 03, 01));
+            result.Investimentos[0].IR.Should().Be(3.0208m);
+            result.Investimentos[0].ValorResgate.Should().Be(705.228m);
+
+            result.Investimentos[1].Nome.Should().Be("Tesouro IPCA 2035");
+            result.Investimentos[1].ValorInvestido.Should().Be(467.1470m);
+            result.Investimentos[1].ValorTotal.Should().Be(502.787m);
+            result.Investimentos[1].Vencimento.Should().Be(new DateTime(2020, 02, 01));
+            result.Investimentos[1].IR.Should().Be(3.56400m);
+            result.Investimentos[1].ValorResgate.Should().Be(502.787m);
         }
 
         #endregion

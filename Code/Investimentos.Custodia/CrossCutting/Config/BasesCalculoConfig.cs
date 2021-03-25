@@ -19,8 +19,8 @@
     {
         public const string Key = "BasesCalculoConfig:RegrasDeResgate";
         public decimal PorcentagemMetadeDoPrazo { get; set; }
-        public decimal AteXMeses { get; set; }
+        public int AteXMeses { get; set; }
         public decimal PorcentagemAteXMeses { get; set; }
-        public decimal Outros { get; set; }
+        public decimal PorcentagemOutros { get; set; }
     }
 }

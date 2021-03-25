@@ -40,6 +40,15 @@ namespace Investimentos.Custodia.Domain.Entities
             this.Add(investimento);
         }
 
+        internal ListaInvestimentos(List<Investimento> investimentos)
+        {
+            if (Investimentos == null) Investimentos = new List<Investimento>();
+            foreach (var investimento in investimentos)
+            {
+                this.Add(investimento);
+            }
+        }
+
         public void Add(Investimento investimento)
         {
             ValorTotal += investimento.ValorTotal;
@@ -47,5 +56,6 @@ namespace Investimentos.Custodia.Domain.Entities
         }
 
         public static implicit operator ListaInvestimentos(Investimento investimento) => new ListaInvestimentos(investimento);
+        public static implicit operator ListaInvestimentos(List<Investimento> investimentos) => new ListaInvestimentos(investimentos);
     }
 }

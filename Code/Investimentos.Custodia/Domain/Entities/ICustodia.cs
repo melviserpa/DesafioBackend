@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Investimentos.Custodia.CrossCutting.Config;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
     public interface ICustodia
     {
-        Investimento CalculaInvestimento(decimal taxaIR);
+        Investimento CalculaInvestimento(BasesCalculoConfig basesCalculoR);
     }
 
     public interface IListaCustodia
     {
-        ListaInvestimentos CalculaInvestimentos(decimal taxaIR);
+        ListaInvestimentos CalculaInvestimentos(BasesCalculoConfig basesCalculo);
     }
 }

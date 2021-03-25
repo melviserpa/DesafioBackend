@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Investimentos.Custodia.CrossCutting.Config;
+
 namespace Investimentos.Custodia.Domain.Entities
 {
     public class Fundos : ICustodia
@@ -26,14 +28,14 @@ namespace Investimentos.Custodia.Domain.Entities
             Quantity = quantity;
         }
 
-        public Investimento CalculaInvestimento(decimal taxaIR)
+        public Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo)
         {
             return new Investimento(
                 nome: $"Fundos {this.Nome}",
                 valorInvestido: calculaValorInvestido(),
                 valorTotal: ValorAtual,
                 vencimento: this.DataResgate,
-                iR: calculaIR(taxaIR),
+                iR: calculaIR(basesCalculo.TaxaSobreRentabilidadeIR.Fundos),
                 valorResgate: calculaValorParaResgate()
                 );
         }
@@ -70,13 +72,9 @@ namespace Investimentos.Custodia.Domain.Entities
             Fundos = fundos ?? new List<Fundos>();
         }
 
-        public ListaInvestimentos CalculaInvestimentos(decimal taxaIR)
+        public ListaInvestimentos CalculaInvestimentos(BasesCalculoConfig basesCalculo)
         {
             throw new NotImplementedException();
         }
     }
 }
-
-/*
- decimal taxaIR = decimal.Parse(configuration.GetSection(Constantes.IRTaxaSobreRentabilidade.Fundos).Value);
- */
