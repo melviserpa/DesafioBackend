@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  investimentos.api:
+    image: melviserpa/investimentos.api:develop
+    container_name: investimentos_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - TZ=America/Recife
+    ports:
+      - "5000:80"
