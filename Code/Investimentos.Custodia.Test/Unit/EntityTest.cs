@@ -15,19 +15,19 @@ namespace Investimentos.Custodia.Test.Unit
     [TestClass]
     public class EntityTest
     {
-        private string fundosJson;
-        private string renda_fixa;
-        private string tesouro_direto;
-        private string investimentos;
+        private string fundos_json;
+        private string renda_fixa_json;
+        private string tesouro_direto_json;
+        private string investimentos_json;
         private string empty;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            fundosJson = File.ReadAllText("Unit/json-mock/fundos.json");
-            renda_fixa = File.ReadAllText("Unit/json-mock/renda_fixa.json");
-            tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto.json");
-            investimentos = File.ReadAllText("Unit/json-mock/investimentos.json");
+            fundos_json = File.ReadAllText("Unit/json-mock/fundos.json");
+            renda_fixa_json = File.ReadAllText("Unit/json-mock/renda_fixa.json");
+            tesouro_direto_json = File.ReadAllText("Unit/json-mock/tesouro_direto.json");
+            investimentos_json = File.ReadAllText("Unit/json-mock/investimentos.json");
             empty = "{}";
         }
 
@@ -36,32 +36,32 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void Fundos_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListaFundos>(fundosJson, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaFundos>(fundos_json, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
 
-            result.Fundos.Should().NotBeNull();
-            result.Fundos.Should().HaveCount(2);
+            result.Entities.Should().NotBeNull();
+            result.Entities.Should().HaveCount(2);
 
-            result.Fundos[0].CapitalInvestido.Should().Be(1000m);
-            result.Fundos[0].ValorAtual.Should().Be(1159m);
-            result.Fundos[0].DataResgate.Should().Be(new DateTime(2022, 10, 01));
-            result.Fundos[0].DataCompra.Should().Be(new DateTime(2017, 10, 01));
-            result.Fundos[0].IOF.Should().Be(0m);
-            result.Fundos[0].Nome.Should().Be("ALASKA");
-            result.Fundos[0].TotalTaxas.Should().Be(53.49m);
-            result.Fundos[0].Quantity.Should().Be(1m);
+            result.Entities[0].CapitalInvestido.Should().Be(1000m);
+            result.Entities[0].ValorAtual.Should().Be(1159m);
+            result.Entities[0].DataResgate.Should().Be(new DateTime(2022, 10, 01));
+            result.Entities[0].DataCompra.Should().Be(new DateTime(2017, 10, 01));
+            result.Entities[0].IOF.Should().Be(0m);
+            result.Entities[0].Nome.Should().Be("ALASKA");
+            result.Entities[0].TotalTaxas.Should().Be(53.49m);
+            result.Entities[0].Quantity.Should().Be(1m);
 
-            result.Fundos[1].CapitalInvestido.Should().Be(10000.0m);
-            result.Fundos[1].ValorAtual.Should().Be(12300.52m);
-            result.Fundos[1].DataResgate.Should().Be(new DateTime(2022, 11, 15));
-            result.Fundos[1].DataCompra.Should().Be(new DateTime(2019, 11, 15));
-            result.Fundos[1].IOF.Should().Be(0m);
-            result.Fundos[1].Nome.Should().Be("REAL");
-            result.Fundos[1].TotalTaxas.Should().Be(134.49m);
-            result.Fundos[1].Quantity.Should().Be(1m);
+            result.Entities[1].CapitalInvestido.Should().Be(10000.0m);
+            result.Entities[1].ValorAtual.Should().Be(12300.52m);
+            result.Entities[1].DataResgate.Should().Be(new DateTime(2022, 11, 15));
+            result.Entities[1].DataCompra.Should().Be(new DateTime(2019, 11, 15));
+            result.Entities[1].IOF.Should().Be(0m);
+            result.Entities[1].Nome.Should().Be("REAL");
+            result.Entities[1].TotalTaxas.Should().Be(134.49m);
+            result.Entities[1].Quantity.Should().Be(1m);
 
-            result.Fundos.Should().Contain(re => re.CapitalInvestido == 10000.0m);
+            result.Entities.Should().Contain(re => re.CapitalInvestido == 10000.0m);
         }
 
         [TestMethod]
@@ -70,8 +70,8 @@ namespace Investimentos.Custodia.Test.Unit
             var result = JsonSerializer.Deserialize<ListaFundos>(empty, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
-            result.Fundos.Should().NotBeNull();
-            result.Fundos.Should().HaveCount(0);
+            result.Entities.Should().NotBeNull();
+            result.Entities.Should().HaveCount(0);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void TesouroDireto_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto_json, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
 
@@ -144,7 +144,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void RendaFixa_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListaRendaFixa>(renda_fixa, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaRendaFixa>(renda_fixa_json, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
 
@@ -356,7 +356,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void Investimentos_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListaInvestimentos>(investimentos, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaInvestimentos>(investimentos_json, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
             result.ValorTotal.Should().Be(829.68m);
@@ -398,9 +398,9 @@ namespace Investimentos.Custodia.Test.Unit
             BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
 
             string tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto_teste1.json");
-            var listaTesouroDireto = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
+            var lista = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
 
-            ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(basesCalculo);
+            ListaInvestimentos result = lista.CalculaInvestimentos(basesCalculo);
 
             result.Should().NotBeNull();
             result.ValorTotal.Should().Be(829.68m);
@@ -421,8 +421,8 @@ namespace Investimentos.Custodia.Test.Unit
         {
             BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
 
-            var listaTesouroDireto = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
-            ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(basesCalculo);
+            var lista = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto_json, JsonHelpers.GetJsonOptions());
+            ListaInvestimentos result = lista.CalculaInvestimentos(basesCalculo);
 
             result.Should().NotBeNull();
             result.ValorTotal.Should().Be(1332.4670m);
@@ -450,9 +450,9 @@ namespace Investimentos.Custodia.Test.Unit
         {
             BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
 
-            var listaRendaFixa = JsonSerializer.Deserialize<ListaRendaFixa>(renda_fixa, JsonHelpers.GetJsonOptions());
+            var lista = JsonSerializer.Deserialize<ListaRendaFixa>(renda_fixa_json, JsonHelpers.GetJsonOptions());
 
-            ListaInvestimentos result = listaRendaFixa.CalculaInvestimentos(basesCalculo);
+            ListaInvestimentos result = lista.CalculaInvestimentos(basesCalculo);
 
             result.Should().NotBeNull();
             result.ValorTotal.Should().Be(7607.61m);
@@ -475,6 +475,35 @@ namespace Investimentos.Custodia.Test.Unit
             result.Investimentos[1].ValorResgate.Should().Be(5509.76m);
         }
 
+        [TestMethod]
+        public void Investimentos_Sumarize_Fundos_Test_1_Ok()
+        {
+            BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
+
+            var lista = JsonSerializer.Deserialize<ListaFundos>(fundos_json, JsonHelpers.GetJsonOptions());
+
+            ListaInvestimentos result = lista.CalculaInvestimentos(basesCalculo);
+
+            result.Should().NotBeNull();
+            result.ValorTotal.Should().Be(13459.5200m);
+
+            result.Investimentos.Should().NotBeNull();
+            result.Investimentos.Should().HaveCount(2);
+
+            result.Investimentos[0].Nome.Should().Be("Fundos ALASKA");
+            result.Investimentos[0].ValorInvestido.Should().Be(1000m);
+            result.Investimentos[0].ValorTotal.Should().Be(1159m);
+            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2022, 10, 01));
+            result.Investimentos[0].IR.Should().Be(15.9m);
+            result.Investimentos[0].ValorResgate.Should().Be(985.15m);
+
+            result.Investimentos[1].Nome.Should().Be("Fundos REAL");
+            result.Investimentos[1].ValorInvestido.Should().Be(10000.0m);
+            result.Investimentos[1].ValorTotal.Should().Be(12300.52m);
+            result.Investimentos[1].Vencimento.Should().Be(new DateTime(2022, 11, 15));
+            result.Investimentos[1].IR.Should().Be(230.052m);
+            result.Investimentos[1].ValorResgate.Should().Be(8610.364m);
+        }
 
         #endregion
     }

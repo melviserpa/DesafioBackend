@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 using Investimentos.Custodia.CrossCutting.Config;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
-    public class Fundos : ICustodia
+    public class Fundos : Custodia
     {
         public decimal CapitalInvestido { get; private set; }
         public decimal ValorAtual { get; private set; }
@@ -28,53 +29,42 @@ namespace Investimentos.Custodia.Domain.Entities
             Quantity = quantity;
         }
 
-        public Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo)
+        private decimal CalculaIr(decimal taxaIR)
         {
+            decimal Rentabilidade = this.ValorAtual - this.CapitalInvestido;
+            return Rentabilidade * (taxaIR / 100);
+        }
+
+        private decimal CalcularValorResgate(RegrasDeResgate regras)
+        {
+            decimal resgate = RegraDeCalculoResgate(regras, this.ValorAtual, this.DataResgate, this.DataCompra);
+            return resgate;
+        }
+
+        public override Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo)
+        {
+            decimal ir = CalculaIr(basesCalculo.TaxaSobreRentabilidadeIR.TesouroDireto);
+            decimal valorResgate = CalcularValorResgate(basesCalculo.RegrasDeResgate);
+
             return new Investimento(
                 nome: $"Fundos {this.Nome}",
-                valorInvestido: calculaValorInvestido(),
-                valorTotal: ValorAtual,
+                valorInvestido: this.CapitalInvestido,
+                valorTotal: this.ValorAtual,
                 vencimento: this.DataResgate,
-                iR: calculaIR(basesCalculo.TaxaSobreRentabilidadeIR.Fundos),
-                valorResgate: calculaValorParaResgate()
+                iR: ir,
+                valorResgate: valorResgate
                 );
-        }
-
-
-        private decimal calculaValorInvestido()
-        {
-            return (this.CapitalInvestido * this.Quantity);
-        }
-
-        private decimal calculaValorParaResgate()
-        {
-            return 0m - TotalTaxas;
-        }
-
-        private decimal calculaRentabilidade()
-        {
-            return 0m;
-        }
-
-        private decimal calculaIR(decimal taxaIR)
-        {
-            return 0m;
         }
     }
 
 
-    public class ListaFundos : IListaCustodia
+
+    public class ListaFundos : ListaCustodia<Fundos>
     {
-        public List<Fundos> Fundos { get; private set; }
+        [JsonPropertyName("Fundos")]
+        public List<Fundos> Entities { get; private set; }
 
-        public ListaFundos(List<Fundos> fundos)
-        {
-            Fundos = fundos ?? new List<Fundos>();
-        }
-
-        public ListaInvestimentos CalculaInvestimentos(BasesCalculoConfig basesCalculo)
-        {
-            throw new NotImplementedException();
-        }
+        public ListaFundos(List<Fundos> entities) : base(entities)
+            => Entities = entities ?? new List<Fundos>();
     }
 }
