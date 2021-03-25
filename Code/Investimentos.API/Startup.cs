@@ -35,8 +35,9 @@ namespace Investimentos.API
                         opt.JsonSerializerOptions.WriteIndented = true;
                     });
 
-            services.AddHealthChecksBackEnd();
             services.AddConfigurationBackEnd(Configuration);
+            services.AddCacheBackEnd(Configuration);
+            services.AddHealthChecksBackEnd();
             services.AddServicesBackEnd();
         }
 

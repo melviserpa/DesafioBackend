@@ -26,7 +26,6 @@ O contrato esperado para o retorno é o seguinte:
 
     {
         "valorTotal": 829.68,
-        //Aqui deverão ser listados todos os investimentos retornados pelos 3 serviços
         "investimentos": [
                         {
                             "nome": "Tesouro Selic 2025",
@@ -66,9 +65,45 @@ Taxa sobre a rentabilidade*
     .Polly
     .
 
-
 ## Patterns abordados
     .DDD
     .SOLID
     .CQRS
     .
+
+## Como executar
+### Pré requisitos
+. É necessário estar em um ambiente com o Docker instalado e executando.
+. Necessáiro o Redis para o cache
+
+###Executando os testes
+Para executar os testes na linha de comando, executar o comando abaixo dentro da pasta Code.
+  dotnet test Investimentos.Custodia.Test
+
+### Executando o Redis apartado
+Dentro da pasta Code, executar o comando docker
+. Para iniciar o redis
+  docker run --name redis -p "6379:6379" -d redis redis-server --requirepass s3nh@s3gur4!
+. Para parar o resis
+  docker rm redis -f
+
+### Iniciando a aplicação 
+Dentro da pasta Code, executar o comando docker
+  docker-compose up -d
+
+### Parando a aplicação
+  docker-compose down
+
+### Executando o deploy com o Redis
+. Iniciar
+  docker-compose -f docker-compose.redis.yml up -d
+.parar
+  docker-compose -f docker-compose.redis.yml down
+
+#Endpoints executando localmente
+##HealthCheck
+    http://localhost:5000/api/v1/healthcheck
+
+##Swagger
+    http://localhost:5000/swagger
+    http://localhost:5000/api/v1/docs/swagger.json

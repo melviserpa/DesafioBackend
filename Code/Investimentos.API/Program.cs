@@ -38,8 +38,8 @@ namespace Investimentos.API
             {
                 Log.Warning("Application {0} start", appName);
                 Log.Warning("Version {0}", appVersion);
-                Log.Information("Logging level set to {0}", Configuration.GetSection(Constantes.Serilog.MinimumLevel).Value);
-                Log.Information("Load configurations from {0}", Configuration.GetSection(Constantes.AppConfig.Leitura).Value);
+                Log.Information("Logging level set to {0}", Configuration.GetSection(AppConfig.SerilogLevelKey).Value);
+                Log.Information("Load configurations from {0}", Configuration.GetSection(AppConfig.LeituraKey).Value);
 
                 CreateHostBuilder(args).Build().Run();
             }

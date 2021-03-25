@@ -12,6 +12,8 @@ namespace Investimentos.API.CrossCutting.Extensions
         {
             services.AddHealthChecks()
                 .AddCheck<FundosService>("FundosServiceHealthCheck")
+                .AddCheck<RendaFixaService>("RendaFixaServiceHealthCheck")
+                .AddCheck<TesouroDiretoService>("TesouroDiretoServiceHealthCheck")
                 ;
 
             return services;
