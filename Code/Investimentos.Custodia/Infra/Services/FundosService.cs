@@ -17,10 +17,10 @@ namespace Investimentos.Custodia.Infra.Services
         {
         }
 
-        public async Task<ListFundos> GetFundosAsync()
+        public async Task<ListaFundos> GetFundosAsync()
         {
             Log.Information("Obtendo custodias em Fundos");
-            return await GetAsync<ListFundos>();
+            return await GetAsync<ListaFundos>();
         }
     }
 }

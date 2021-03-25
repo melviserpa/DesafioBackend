@@ -18,7 +18,6 @@ namespace Investimentos.Custodia.Domain.Entities
         public string Tipo { get; private set; }
         public string Nome { get; private set; }
 
-        [JsonConstructor]
         public TesouroDireto(decimal valorInvestido, decimal valorTotal, DateTime vencimento, DateTime dataDeCompra, decimal iOF, string indice, string tipo, string nome)
         {
             ValorInvestido = valorInvestido;
@@ -39,34 +38,7 @@ namespace Investimentos.Custodia.Domain.Entities
 
         private decimal CalcularValorResgate(RegrasDeResgate regras)
         {
-            decimal resgate = ValorTotal;
-            decimal valorDesconto = 0;
-
-            decimal resgateMetadeDoTempo = regras.PorcentagemMetadeDoPrazo / 100m;
-            decimal reasgateXMesesParaVencer = regras.PorcentagemAteXMeses / 100;
-            decimal resgateOutros = regras.PorcentagemOutros / 100;
-
-            var Hoje = DateTime.Today;
-
-            if (Vencimento >= Hoje)
-            {
-                if (RegraAteXMeses(Vencimento, regras.AteXMeses))
-                {
-                    valorDesconto = ValorTotal * reasgateXMesesParaVencer;
-                    resgate = ValorTotal - valorDesconto;
-                }
-                else if (RegraPassouMetadeDaCustodia(DataDeCompra, Vencimento))
-                {
-                    valorDesconto = ValorTotal * resgateMetadeDoTempo;
-                    resgate = ValorTotal - valorDesconto;
-                }
-                else
-                {
-                    valorDesconto = ValorTotal * resgateOutros;
-                    resgate = ValorTotal - valorDesconto;
-                }
-            }
-
+            decimal resgate = RegraDeCalculoResgate(regras, ValorTotal, Vencimento, DataDeCompra);
             return resgate;
         }
 
@@ -76,24 +48,24 @@ namespace Investimentos.Custodia.Domain.Entities
             decimal valorResgate = CalcularValorResgate(basesCalculo.RegrasDeResgate);
 
             return new Investimento(
-                this.Nome,
-                this.ValorInvestido,
-                this.ValorTotal,
-                this.Vencimento,
-                ir,
-                valorResgate
+                nome: this.Nome,
+                valorInvestido: this.ValorInvestido,
+                valorTotal: this.ValorTotal,
+                vencimento: this.Vencimento,
+                iR: ir,
+                valorResgate: valorResgate
                 );
         }
     }
 
 
 
-    public class ListTesouroDireto : ListaCustodia<TesouroDireto>
+    public class ListaTesouroDireto : ListaCustodia<TesouroDireto>
     {
         [JsonPropertyName("TDs")]
         public List<TesouroDireto> Entities { get; private set; }
 
-        public ListTesouroDireto(List<TesouroDireto> entities) : base(entities)
+        public ListaTesouroDireto(List<TesouroDireto> entities) : base(entities)
             => Entities = entities ?? new List<TesouroDireto>();
     }
 }

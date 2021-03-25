@@ -30,6 +30,39 @@ namespace Investimentos.Custodia.Domain.Entities
             return passouDaData;
         }
 
+        internal decimal RegraDeCalculoResgate(RegrasDeResgate regras, decimal valorTotal, DateTime DataDeVencimento, DateTime DataDeCompra)
+        {
+            decimal resgate = valorTotal;
+            decimal valorDesconto = 0;
+
+            decimal resgateMetadeDoTempo = regras.PorcentagemMetadeDoPrazo / 100m;
+            decimal reasgateXMesesParaVencer = regras.PorcentagemAteXMeses / 100;
+            decimal resgateOutros = regras.PorcentagemOutros / 100;
+
+            var Hoje = DateTime.Today;
+
+            if (DataDeVencimento >= Hoje)
+            {
+                if (RegraAteXMeses(DataDeVencimento, regras.AteXMeses))
+                {
+                    valorDesconto = valorTotal * reasgateXMesesParaVencer;
+                    resgate = valorTotal - valorDesconto;
+                }
+                else if (RegraPassouMetadeDaCustodia(DataDeCompra, DataDeVencimento))
+                {
+                    valorDesconto = valorTotal * resgateMetadeDoTempo;
+                    resgate = valorTotal - valorDesconto;
+                }
+                else
+                {
+                    valorDesconto = valorTotal * resgateOutros;
+                    resgate = valorTotal - valorDesconto;
+                }
+            }
+
+            return resgate;
+        }
+
         public abstract Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo);
     }
 

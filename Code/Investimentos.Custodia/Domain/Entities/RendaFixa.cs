@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+using Investimentos.Custodia.CrossCutting.Config;
 
 namespace Investimentos.Custodia.Domain.Entities
 {
-    public class RendaFixa
+    public class RendaFixa : Custodia
     {
         public decimal CapitalInvestido { get; private set; }
         public decimal CapitalAtual { get; private set; }
@@ -37,16 +40,43 @@ namespace Investimentos.Custodia.Domain.Entities
             PrecoUnitario = precoUnitario;
             Primario = primario;
         }
+
+        private decimal CalculaIr(decimal taxaIR)
+        {
+            decimal Rentabilidade = this.CapitalAtual - this.CapitalInvestido;
+            return Rentabilidade * (taxaIR / 100);
+        }
+
+        private decimal CalcularValorResgate(RegrasDeResgate regras)
+        {
+            decimal resgate = RegraDeCalculoResgate(regras, this.CapitalAtual, Vencimento, DataOperacao);
+            return resgate;
+        }
+
+        public override Investimento CalculaInvestimento(BasesCalculoConfig basesCalculo)
+        {
+            decimal ir = CalculaIr(basesCalculo.TaxaSobreRentabilidadeIR.TesouroDireto);
+            decimal valorResgate = CalcularValorResgate(basesCalculo.RegrasDeResgate);
+
+            return new Investimento(
+                nome: $"{this.Tipo} {this.Indice} - {this.Nome}",
+                valorInvestido: this.CapitalInvestido,
+                valorTotal: this.CapitalAtual,
+                vencimento: this.Vencimento,
+                iR: ir,
+                valorResgate: valorResgate
+                );
+        }
     }
 
 
-    public class ListRendaFixa
-    {
-        public List<RendaFixa> LCIs { get; private set; }
 
-        public ListRendaFixa(List<RendaFixa> lcis)
-        {
-            LCIs = lcis ?? new List<RendaFixa>();
-        }
+    public class ListaRendaFixa : ListaCustodia<RendaFixa>
+    {
+        [JsonPropertyName("LCIs")]
+        public List<RendaFixa> Entities { get; private set; }
+
+        public ListaRendaFixa(List<RendaFixa> entities) : base(entities)
+            => Entities = entities ?? new List<RendaFixa>();
     }
 }

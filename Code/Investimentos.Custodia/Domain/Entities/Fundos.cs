@@ -63,11 +63,11 @@ namespace Investimentos.Custodia.Domain.Entities
     }
 
 
-    public class ListFundos : IListaCustodia
+    public class ListaFundos : IListaCustodia
     {
         public List<Fundos> Fundos { get; private set; }
 
-        public ListFundos(List<Fundos> fundos)
+        public ListaFundos(List<Fundos> fundos)
         {
             Fundos = fundos ?? new List<Fundos>();
         }

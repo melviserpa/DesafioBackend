@@ -36,7 +36,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void Fundos_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListFundos>(fundosJson, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaFundos>(fundosJson, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
 
@@ -67,7 +67,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void Fundos_JsonParse_Test_LoadJsonEmpty()
         {
-            var result = JsonSerializer.Deserialize<ListFundos>(empty, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaFundos>(empty, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
             result.Fundos.Should().NotBeNull();
@@ -77,7 +77,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void Fundos_JsonParse_Test_ErrorLoadStringEmpty()
         {
-            Action action = () => JsonSerializer.Deserialize<ListFundos>(string.Empty, JsonHelpers.GetJsonOptions());
+            Action action = () => JsonSerializer.Deserialize<ListaFundos>(string.Empty, JsonHelpers.GetJsonOptions());
 
             action.Should()
             .ThrowExactly<JsonException>()
@@ -91,7 +91,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void TesouroDireto_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
 
@@ -120,7 +120,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void TesouroDireto_JsonParse_Test_LoadJsonEmpty()
         {
-            var result = JsonSerializer.Deserialize<ListTesouroDireto>(empty, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaTesouroDireto>(empty, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
             result.Entities.Should().NotBeNull();
@@ -130,7 +130,7 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void TesouroDireto_JsonParse_Test_ErrorLoadStringEmpty()
         {
-            Action action = () => JsonSerializer.Deserialize<ListTesouroDireto>(string.Empty, JsonHelpers.GetJsonOptions());
+            Action action = () => JsonSerializer.Deserialize<ListaTesouroDireto>(string.Empty, JsonHelpers.GetJsonOptions());
 
             action.Should()
             .ThrowExactly<JsonException>()
@@ -144,58 +144,58 @@ namespace Investimentos.Custodia.Test.Unit
         [TestMethod]
         public void RendaFixa_JsonParse_Test_LoadOk()
         {
-            var result = JsonSerializer.Deserialize<ListRendaFixa>(renda_fixa, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaRendaFixa>(renda_fixa, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
 
-            result.LCIs.Should().NotBeNull();
-            result.LCIs.Should().HaveCount(2);
+            result.Entities.Should().NotBeNull();
+            result.Entities.Should().HaveCount(2);
 
-            result.LCIs[0].CapitalInvestido.Should().Be(2000.0m);
-            result.LCIs[0].CapitalAtual.Should().Be(2097.85m);
-            result.LCIs[0].Quantidade.Should().Be(2.0m);
-            result.LCIs[0].Vencimento.Should().Be(new DateTime(2021, 03, 09));
-            result.LCIs[0].IOF.Should().Be(0m);
-            result.LCIs[0].OutrasTaxas.Should().Be(0m);
-            result.LCIs[0].Taxas.Should().Be(0m);
-            result.LCIs[0].Indice.Should().Be("97% do CDI");
-            result.LCIs[0].Tipo.Should().Be("LCI");
-            result.LCIs[0].Nome.Should().Be("BANCO MAXIMA");
-            result.LCIs[0].GuarantidoFGC.Should().Be(true);
-            result.LCIs[0].DataOperacao.Should().Be(new DateTime(2019, 03, 14));
-            result.LCIs[0].PrecoUnitario.Should().Be(1048.927450m);
-            result.LCIs[0].Primario.Should().Be(false);
+            result.Entities[0].CapitalInvestido.Should().Be(2000.0m);
+            result.Entities[0].CapitalAtual.Should().Be(2097.85m);
+            result.Entities[0].Quantidade.Should().Be(2.0m);
+            result.Entities[0].Vencimento.Should().Be(new DateTime(2021, 03, 09));
+            result.Entities[0].IOF.Should().Be(0m);
+            result.Entities[0].OutrasTaxas.Should().Be(0m);
+            result.Entities[0].Taxas.Should().Be(0m);
+            result.Entities[0].Indice.Should().Be("97% do CDI");
+            result.Entities[0].Tipo.Should().Be("LCI");
+            result.Entities[0].Nome.Should().Be("BANCO MAXIMA");
+            result.Entities[0].GuarantidoFGC.Should().Be(true);
+            result.Entities[0].DataOperacao.Should().Be(new DateTime(2019, 03, 14));
+            result.Entities[0].PrecoUnitario.Should().Be(1048.927450m);
+            result.Entities[0].Primario.Should().Be(false);
 
-            result.LCIs[1].CapitalInvestido.Should().Be(5000.0m);
-            result.LCIs[1].CapitalAtual.Should().Be(5509.76m);
-            result.LCIs[1].Quantidade.Should().Be(1.0m);
-            result.LCIs[1].Vencimento.Should().Be(new DateTime(2021, 03, 09));
-            result.LCIs[1].IOF.Should().Be(0m);
-            result.LCIs[1].OutrasTaxas.Should().Be(0m);
-            result.LCIs[1].Taxas.Should().Be(0m);
-            result.LCIs[1].Indice.Should().Be("97% do CDI");
-            result.LCIs[1].Tipo.Should().Be("LCI");
-            result.LCIs[1].Nome.Should().Be("BANCO BARI");
-            result.LCIs[1].GuarantidoFGC.Should().Be(true);
-            result.LCIs[1].DataOperacao.Should().Be(new DateTime(2019, 03, 14));
-            result.LCIs[1].PrecoUnitario.Should().Be(2754.88m);
-            result.LCIs[1].Primario.Should().Be(false);
+            result.Entities[1].CapitalInvestido.Should().Be(5000.0m);
+            result.Entities[1].CapitalAtual.Should().Be(5509.76m);
+            result.Entities[1].Quantidade.Should().Be(1.0m);
+            result.Entities[1].Vencimento.Should().Be(new DateTime(2021, 03, 09));
+            result.Entities[1].IOF.Should().Be(0m);
+            result.Entities[1].OutrasTaxas.Should().Be(0m);
+            result.Entities[1].Taxas.Should().Be(0m);
+            result.Entities[1].Indice.Should().Be("97% do CDI");
+            result.Entities[1].Tipo.Should().Be("LCI");
+            result.Entities[1].Nome.Should().Be("BANCO BARI");
+            result.Entities[1].GuarantidoFGC.Should().Be(true);
+            result.Entities[1].DataOperacao.Should().Be(new DateTime(2019, 03, 14));
+            result.Entities[1].PrecoUnitario.Should().Be(2754.88m);
+            result.Entities[1].Primario.Should().Be(false);
         }
 
         [TestMethod]
         public void RendaFixa_JsonParse_Test_LoadJsonEmpty()
         {
-            var result = JsonSerializer.Deserialize<ListRendaFixa>(empty, JsonHelpers.GetJsonOptions());
+            var result = JsonSerializer.Deserialize<ListaRendaFixa>(empty, JsonHelpers.GetJsonOptions());
 
             result.Should().NotBeNull();
-            result.LCIs.Should().NotBeNull();
-            result.LCIs.Should().HaveCount(0);
+            result.Entities.Should().NotBeNull();
+            result.Entities.Should().HaveCount(0);
         }
 
         [TestMethod]
         public void RendaFixa_JsonParse_Test_ErrorLoadStringEmpty()
         {
-            Action action = () => JsonSerializer.Deserialize<ListRendaFixa>(string.Empty, JsonHelpers.GetJsonOptions());
+            Action action = () => JsonSerializer.Deserialize<ListaRendaFixa>(string.Empty, JsonHelpers.GetJsonOptions());
 
             action.Should()
             .ThrowExactly<JsonException>()
@@ -398,8 +398,7 @@ namespace Investimentos.Custodia.Test.Unit
             BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
 
             string tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto_teste1.json");
-            var listaTesouroDireto = JsonSerializer.Deserialize<ListTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
-
+            var listaTesouroDireto = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
 
             ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(basesCalculo);
 
@@ -422,10 +421,7 @@ namespace Investimentos.Custodia.Test.Unit
         {
             BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
 
-            string tesouro_direto = File.ReadAllText("Unit/json-mock/tesouro_direto.json");
-            var listaTesouroDireto = JsonSerializer.Deserialize<ListTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
-
-
+            var listaTesouroDireto = JsonSerializer.Deserialize<ListaTesouroDireto>(tesouro_direto, JsonHelpers.GetJsonOptions());
             ListaInvestimentos result = listaTesouroDireto.CalculaInvestimentos(basesCalculo);
 
             result.Should().NotBeNull();
@@ -448,6 +444,37 @@ namespace Investimentos.Custodia.Test.Unit
             result.Investimentos[1].IR.Should().Be(3.56400m);
             result.Investimentos[1].ValorResgate.Should().Be(502.787m);
         }
+
+        [TestMethod]
+        public void Investimentos_Sumarize_RendaFixa_Test_1_Ok()
+        {
+            BasesCalculoConfig basesCalculo = BaseCalguloConfigCarregaro();
+
+            var listaRendaFixa = JsonSerializer.Deserialize<ListaRendaFixa>(renda_fixa, JsonHelpers.GetJsonOptions());
+
+            ListaInvestimentos result = listaRendaFixa.CalculaInvestimentos(basesCalculo);
+
+            result.Should().NotBeNull();
+            result.ValorTotal.Should().Be(7607.61m);
+
+            result.Investimentos.Should().NotBeNull();
+            result.Investimentos.Should().HaveCount(2);
+
+            result.Investimentos[0].Nome.Should().Be("LCI 97% do CDI - BANCO MAXIMA");
+            result.Investimentos[0].ValorInvestido.Should().Be(2000.0m);
+            result.Investimentos[0].ValorTotal.Should().Be(2097.85m);
+            result.Investimentos[0].Vencimento.Should().Be(new DateTime(2021, 03, 09));
+            result.Investimentos[0].IR.Should().Be(9.785m);
+            result.Investimentos[0].ValorResgate.Should().Be(2097.85m);
+
+            result.Investimentos[1].Nome.Should().Be("LCI 97% do CDI - BANCO BARI");
+            result.Investimentos[1].ValorInvestido.Should().Be(5000.0m);
+            result.Investimentos[1].ValorTotal.Should().Be(5509.76m);
+            result.Investimentos[1].Vencimento.Should().Be(new DateTime(2021, 03, 09));
+            result.Investimentos[1].IR.Should().Be(50.976m);
+            result.Investimentos[1].ValorResgate.Should().Be(5509.76m);
+        }
+
 
         #endregion
     }
