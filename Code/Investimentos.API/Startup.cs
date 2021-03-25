@@ -4,8 +4,6 @@ using System.Text.Json.Serialization;
 
 using Investimentos.API.CrossCutting.Extensions;
 using Investimentos.API.CrossCutting.Helpers;
-using Investimentos.Custodia.CrossCutting.Config;
-using Investimentos.Custodia.Infra.Services;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +25,7 @@ namespace Investimentos.API
             services.AddHttpContextAccessor();
             services.AddHeaderPropagation(config => config.Headers.Add("x-correlationid", item => Guid.NewGuid().ToString()));
             services.AddSwaggerDocumantation();
+
             services.AddControllers(opt => opt.Conventions.Add(new ApiExplorerGetsOnlyConvention(Configuration)))
                     .AddJsonOptions(opt =>
                     {
@@ -37,15 +36,8 @@ namespace Investimentos.API
                     });
 
             services.AddHealthChecksBackEnd();
-
-            services.Configure<TesouroDiretoServiceConfig>(this.Configuration.GetSection(TesouroDiretoServiceConfig.Key));
-            services.Configure<FundosServiceConfig>(this.Configuration.GetSection(FundosServiceConfig.Key));
-            services.Configure<RendaFixaServiceConfig>(this.Configuration.GetSection(RendaFixaServiceConfig.Key));
-            services.Configure<BasesCalculoConfig>(this.Configuration.GetSection(BasesCalculoConfig.Key));
-
-            services.AddHttpClient<TesouroDiretoService>();
-            services.AddHttpClient<FundosService>();
-            services.AddHttpClient<RendaFixaService>();
+            services.AddConfigurationBackEnd(Configuration);
+            services.AddServicesBackEnd();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

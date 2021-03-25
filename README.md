@@ -71,7 +71,3 @@ Taxa sobre a rentabilidade*
     .SOLID
     .CQRS
     .
-
-
-## Metodologias  abordadas
-    .

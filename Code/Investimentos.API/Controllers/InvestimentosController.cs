@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
+using Serilog;
+
 namespace Investimentos.API.Controllers
 {
     [ApiController]
@@ -39,19 +41,28 @@ namespace Investimentos.API.Controllers
             [FromServices] IOptions<BasesCalculoConfig> basesCalculoConfig
             )
         {
-            var tds = await tesouroDiretoService.GetFundosAsync();
-            var lcis = await rendaFixaService.GetFundosAsync();
-            var fundos = await fundosService.GetFundosAsync();
+            try
+            {
+                var tds = tesouroDiretoService.GetFundosAsync();
+                var lcis = rendaFixaService.GetFundosAsync();
+                var fundos = fundosService.GetFundosAsync();
 
-            var tdsResult = tds.CalculaInvestimentos(basesCalculoConfig.Value);
-            var lcisResult = lcis.CalculaInvestimentos(basesCalculoConfig.Value);
-            var fundosResult = fundos.CalculaInvestimentos(basesCalculoConfig.Value);
+                var tdsResult = (await tds).CalculaInvestimentos(basesCalculoConfig.Value);
+                var lcisResult = (await lcis).CalculaInvestimentos(basesCalculoConfig.Value);
+                var fundosResult = (await fundos).CalculaInvestimentos(basesCalculoConfig.Value);
 
-            ListaInvestimentos result = tdsResult;
-            result.AddRange(lcisResult);
-            result.AddRange(fundosResult);
+                ListaInvestimentos result = tdsResult;
+                result.AddRange(lcisResult);
+                result.AddRange(fundosResult);
 
-            return this.Ok(result);
+                return this.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Ocorreu um erro na soliocitação");
+                return this.BadRequest();
+            }
+            
         }
     }
 }
