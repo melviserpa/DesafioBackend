@@ -60,6 +60,7 @@ Taxa sobre a rentabilidade*
 
 ## Tecnologias utilizadas
     .Net Core 3.1
+    .Swagger
     .HealthChecks
     .Docker
     .Polly
